@@ -1,14 +1,27 @@
 # Evaluation Report
 
 ## Deterministic sample metrics
-- evidence_standard_met: 14/20 = 70.00%
-- issue_type: 7/20 = 35.00%
+- evidence_standard_met: 17/20 = 85.00%
+- issue_type: 10/20 = 50.00%
 - object_part: 15/20 = 75.00%
-- claim_status: 11/20 = 55.00%
+- claim_status: 15/20 = 75.00%
 - valid_image: 18/20 = 90.00%
-- severity: 7/20 = 35.00%
+- severity: 11/20 = 55.00%
 
-- exact structured match across core fields: 5/20 = 25.00%
+- exact structured match across core fields: 8/20 = 40.00%
+
+## Claim status path audit
+- supported path: valid images plus parsed issue and part with no contradiction cue.
+- contradicted path: valid images plus parsed/evaluable part and a narrow semantic contradiction cue, or VLM output normalized to contradicted.
+- not_enough_information path: invalid images, unknown issue/part without contradiction cue, identity/visibility ambiguity from VLM, or schema fallback.
+
+## Before/after claim_status distribution
+- before: {'supported': 17, 'contradicted': 0, 'not_enough_information': 3}
+- after: {'supported': 17, 'contradicted': 3, 'not_enough_information': 0}
+
+## Before/after confusion analysis
+- before confusion (gold, predicted): {('supported', 'supported'): 11, ('supported', 'not_enough_information'): 1, ('contradicted', 'supported'): 3, ('contradicted', 'not_enough_information'): 2, ('not_enough_information', 'supported'): 3}
+- after confusion (gold, predicted): {('supported', 'supported'): 12, ('contradicted', 'supported'): 2, ('contradicted', 'contradicted'): 3, ('not_enough_information', 'supported'): 3}
 
 ## Strategy comparison
 - Strategy A: deterministic claim parser plus rule layer. Zero cost, reproducible, safe fallback.
